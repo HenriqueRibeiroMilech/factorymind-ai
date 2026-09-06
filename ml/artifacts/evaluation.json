@@ -1,0 +1,107 @@
+{
+  "baseline": {
+    "threshold": 0.5,
+    "validation": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f2": 0.0,
+      "average_precision": 0.034,
+      "confusion_matrix": [
+        [
+          1932,
+          0
+        ],
+        [
+          68,
+          0
+        ]
+      ]
+    },
+    "test": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f2": 0.0,
+      "average_precision": 0.034,
+      "confusion_matrix": [
+        [
+          1932,
+          0
+        ],
+        [
+          68,
+          0
+        ]
+      ]
+    }
+  },
+  "logistic_regression": {
+    "threshold": 0.8,
+    "validation": {
+      "precision": 0.3275862068965517,
+      "recall": 0.5588235294117647,
+      "f2": 0.4896907216494845,
+      "average_precision": 0.40716789954175675,
+      "confusion_matrix": [
+        [
+          1854,
+          78
+        ],
+        [
+          30,
+          38
+        ]
+      ]
+    },
+    "test": {
+      "precision": 0.34782608695652173,
+      "recall": 0.5882352941176471,
+      "f2": 0.5167958656330749,
+      "average_precision": 0.4086765639484345,
+      "confusion_matrix": [
+        [
+          1857,
+          75
+        ],
+        [
+          28,
+          40
+        ]
+      ]
+    }
+  },
+  "random_forest": {
+    "threshold": 0.27,
+    "validation": {
+      "precision": 0.5048543689320388,
+      "recall": 0.7647058823529411,
+      "f2": 0.6933333333333334,
+      "average_precision": 0.6649063678837347,
+      "confusion_matrix": [
+        [
+          1881,
+          51
+        ],
+        [
+          16,
+          52
+        ]
+      ]
+    },
+    "test": {
+      "precision": 0.54,
+      "recall": 0.7941176470588235,
+      "f2": 0.7258064516129032,
+      "average_precision": 0.6880025829128201,
+      "confusion_matrix": [
+        [
+          1886,
+          46
+        ],
+        [
+          14,
+          54
+        ]
+      ]
+    }
+  }
+}
