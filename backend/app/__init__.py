@@ -1,5 +1,4 @@
 import sqlite3
-from pathlib import Path
 
 from flask import Flask, jsonify, send_from_directory
 from pydantic import ValidationError

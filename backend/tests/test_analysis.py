@@ -160,3 +160,6 @@ def test_sources_are_verbatim_and_area_specific(app):
         assert source["excerpt"] in original.read_text(encoding="utf-8")
     with app.app_context():
         assert retrieve("quality", "xyzxyzqabc") == []
+        vibration = retrieve("equipment", "A mesa da fresadora vibrou durante a segunda passada.")
+    assert vibration
+    assert vibration[0]["section"] == "Vibração e ruído durante a usinagem"

@@ -59,6 +59,6 @@ def assemble(incident, raw, sources, ml):
         "triage": {"suggested_category": incident["suggested_category"], "confidence": incident["confidence"], "model": incident["jev_model"]},
         "human_review": incident["review"], **narrative.model_dump(),
         "ml": ml, "sources": sources, "evidence_gaps": gaps,
-        "review_needed": bool(narrative.review_needed or gaps or incident["relevant_risk"]),
+        "review_needed": bool(narrative.review_needed or narrative.missing_information or gaps or incident["relevant_risk"]),
         "notice": "Análise inicial assistida por IA. Procedimentos fictícios para portfólio; confira os trechos e valide as hipóteses antes de qualquer decisão operacional.",
     }

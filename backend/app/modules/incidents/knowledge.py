@@ -24,8 +24,17 @@ def retrieve(category, query, limit=4):
     if not chunks or not query.strip():
         return []
     vectorizer = TfidfVectorizer(strip_accents="unicode", lowercase=True, stop_words=STOP_WORDS, ngram_range=(1, 2))
-    matrix = vectorizer.fit_transform([chunk["section"] + " " + chunk["excerpt"] for chunk in chunks])
-    scores = cosine_similarity(vectorizer.transform([query]), matrix)[0]
+    documents = [chunk["section"] + " " + chunk["excerpt"] for chunk in chunks]
+    matrix = vectorizer.fit_transform(documents)
+    word_scores = cosine_similarity(vectorizer.transform([query]), matrix)[0]
+    # Character n-grams bridge ordinary inflections such as "vibrou" / "vibração".
+    # Remove stop words before this pass so common fragments do not dominate.
+    tokenize = TfidfVectorizer(strip_accents="unicode", stop_words=STOP_WORDS).build_analyzer()
+    normalized = [" ".join(tokenize(text)) for text in documents]
+    characters = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5))
+    character_matrix = characters.fit_transform(normalized)
+    character_scores = cosine_similarity(characters.transform([" ".join(tokenize(query))]), character_matrix)[0]
+    scores = 0.6 * word_scores + 0.4 * character_scores
     order = sorted(range(len(chunks)), key=lambda index: (-scores[index], chunks[index]["id"]))
     return [{**chunks[index], "similarity": round(float(scores[index]), 4)}
-            for index in order[:limit] if scores[index] >= 0.08]
+            for index in order[:limit] if scores[index] >= 0.07]

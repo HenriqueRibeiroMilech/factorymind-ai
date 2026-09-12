@@ -59,3 +59,13 @@ def test_crashed_request_is_resumable(app, client, monkeypatch):
     recovered = client.get(f'/api/v1/incidents/{record["id"]}').json
     assert recovered["status"] == "analysis_failed"
     assert recovered["last_error"]["code"] == "interrupted"
+
+
+def test_history_search_handles_portuguese_and_uppercase_ids(client, monkeypatch):
+    classify(monkeypatch, category="quality")
+    record = client.post("/api/v1/incidents", json=payload(description="O diâmetro da peça está fora da tolerância.", reference="Lote Ç-10")).json
+    for query in ("DIÂMETRO", "LOTE Ç", record["id"][:8].upper()):
+        result = client.get("/api/v1/incidents", query_string={"q": query, "status": "pending"}).json
+        assert result["total"] == 1
+        assert result["items"][0]["id"] == record["id"]
+    assert client.get("/api/v1/incidents", query_string={"q": "' OR 1=1 --"}).json["total"] == 0

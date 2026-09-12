@@ -18,6 +18,8 @@ def now():
 def connection():
     db = sqlite3.connect(current_app.config["DATABASE_PATH"], timeout=10)
     db.row_factory = sqlite3.Row
+    # SQLite lower() only folds ASCII; search must also handle Portuguese text.
+    db.create_function("casefold", 1, str.casefold, deterministic=True)
     try:
         with db:
             yield db
@@ -86,7 +88,7 @@ def create(data):
 def list_incidents(query, status, page):
     clauses, params = [], []
     if query:
-        clauses.append("(instr(lower(description), lower(?)) > 0 OR instr(lower(reference), lower(?)) > 0 OR instr(id, ?) > 0)")
+        clauses.append("(instr(casefold(description), casefold(?)) > 0 OR instr(casefold(reference), casefold(?)) > 0 OR instr(casefold(id), casefold(?)) > 0)")
         params += [query, query, query]
     if status == "completed":
         clauses.append("status = 'completed'")
