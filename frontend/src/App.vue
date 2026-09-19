@@ -1,11 +1,8 @@
 <script setup>
-import { ref } from "vue";
 import { useRoute } from "vue-router";
 import Icon from "./components/Icon.vue";
-import HelpDialog from "./components/HelpDialog.vue";
 
 const route = useRoute();
-const helpOpen = ref(false);
 </script>
 
 <template>
@@ -34,11 +31,6 @@ const helpOpen = ref(false);
         ><Icon name="history" :size="18" /><span>Histórico</span></RouterLink
       >
     </nav>
-    <div class="header-actions">
-      <button class="help-button" @click="helpOpen = true">
-        <Icon name="help" :size="18" /><span>Como funciona</span>
-      </button>
-    </div>
   </header>
   <div class="app-body">
     <main id="main" tabindex="-1"><RouterView /></main>
@@ -49,5 +41,4 @@ const helpOpen = ref(false);
       ><span>As análises precisam de revisão da equipe.</span>
     </footer>
   </div>
-  <HelpDialog v-if="helpOpen" @close="helpOpen = false" />
 </template>

@@ -3,6 +3,7 @@ import { reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { api } from "../api";
 import Icon from "../components/Icon.vue";
+import HelpDialog from "../components/HelpDialog.vue";
 
 const router = useRouter();
 // A draft and its idempotency key survive a refresh or a lost provider response.
@@ -30,6 +31,7 @@ const form = reactive(
 );
 const busy = ref(false);
 const error = ref("");
+const guideSection = ref(null);
 const fingerprint = () =>
   JSON.stringify([form.description, form.reference, form.relevant_risk]);
 let submittedFingerprint = saved ? fingerprint() : null;
@@ -81,6 +83,34 @@ async function submit() {
       solicite a análise.
     </p>
   </div>
+  <section class="project-guide" aria-label="Conheça e teste o projeto">
+    <div class="project-guide-copy">
+      <span class="guide-icon"><Icon name="book" :size="22" /></span>
+      <div>
+        <h2>Primeira vez por aqui?</h2>
+        <p>Veja o fluxo e experimente as três áreas com relatos de exemplo.</p>
+      </div>
+    </div>
+    <div class="guide-actions">
+      <button
+        type="button"
+        class="guide-button"
+        @click="guideSection = 'workflow'"
+        aria-haspopup="dialog"
+      >
+        <Icon name="flow" :size="18" /> Como funciona
+      </button>
+      <button
+        type="button"
+        class="guide-button guide-button-primary"
+        @click="guideSection = 'examples'"
+        aria-haspopup="dialog"
+      >
+        <Icon name="file" :size="18" /> Exemplos para testar
+        <Icon name="arrow" :size="16" />
+      </button>
+    </div>
+  </section>
   <div class="new-layout">
     <form class="card incident-form" @submit.prevent="submit" :aria-busy="busy">
       <div class="card-heading">
@@ -205,4 +235,9 @@ async function submit() {
       </div>
     </aside>
   </div>
+  <HelpDialog
+    v-if="guideSection"
+    :section="guideSection"
+    @close="guideSection = null"
+  />
 </template>

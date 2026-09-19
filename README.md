@@ -71,6 +71,7 @@ Abra [http://127.0.0.1:5000](http://127.0.0.1:5000). O Flask serve os arquivos d
 ## Como usar
 
 - **Novo relato:** descreva o problema; identificação e sinalização de risco são opcionais. O relato é salvo antes de chamar o Jev.
+- **Conheça e teste:** os botões em destaque na página inicial reúnem o funcionamento e três cenários para experimentar. Cada exemplo tem um relato para copiar, um roteiro e os pontos a conferir no relatório; o caso de equipamentos também inclui as seis leituras fictícias. A ajuda preserva o que já foi digitado.
 - **Revisão:** confiança abaixo de 0,75, confiança ausente ou risco sinalizado exigem confirmar/corrigir a categoria e justificar antes da análise. Também é possível revisar voluntariamente. A sugestão original permanece salva.
 - **Contexto:** acrescente um complemento sem alterar o original. Em equipamentos, informe todas as seis leituras do mesmo instante ou selecione que não dispõe delas. As temperaturas usam kelvin; vibração permanece no texto. Qualidade e Processos seguem sem ML.
 - **Relatório:** consulte hipóteses, recomendações, trechos e lacunas. Quando o ML é executado, veja entradas, escore, limiar, decisão e versão. A interface também mostra os valores originais sem arredondamento em um detalhe expansível.
