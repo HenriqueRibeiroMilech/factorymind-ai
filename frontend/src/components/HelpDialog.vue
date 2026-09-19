@@ -24,7 +24,7 @@ onUnmounted(() => previousFocus?.focus());
     "
   >
     <div class="dialog-header">
-      <span class="eyebrow">DA OBSERVAÇÃO À ANÁLISE</span
+      <span class="eyebrow">COMO FUNCIONA</span
       ><button
         class="icon-button"
         aria-label="Fechar ajuda"
@@ -33,10 +33,10 @@ onUnmounted(() => previousFocus?.focus());
         <Icon name="close" />
       </button>
     </div>
-    <h2>Um relato. Um caminho claro.</h2>
+    <h2>Do registro ao relatório</h2>
     <p>
-      Descreva o que observou. O FactoryMind reúne as informações para apoiar a
-      próxima decisão da equipe.
+      Registre o problema, confira a área responsável e complete as informações
+      disponíveis antes de pedir a análise.
     </p>
     <ol class="help-steps">
       <li>

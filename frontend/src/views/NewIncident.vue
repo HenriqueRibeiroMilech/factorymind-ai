@@ -74,30 +74,27 @@ async function submit() {
 
 <template>
   <div class="page-heading">
-    <div class="eyebrow"><span></span> REGISTRO DE OCORRÊNCIA</div>
-    <h1>O que aconteceu<br />na operação<span class="accent-text">?</span></h1>
+    <div class="eyebrow">NOVO REGISTRO</div>
+    <h1>Registrar ocorrência</h1>
     <p>
-      Transforme o que você observou em uma análise com contexto.<br
-        class="desktop-break"
-      />
-      Comece pelo relato. Nós ajudamos a organizar o próximo passo.
+      Conte o que aconteceu na operação. Depois, confira a área responsável e
+      solicite a análise.
     </p>
   </div>
   <div class="new-layout">
     <form class="card incident-form" @submit.prevent="submit" :aria-busy="busy">
       <div class="card-heading">
-        <span class="section-index">01</span>
+        <span class="form-heading-icon"><Icon name="file" :size="21" /></span>
         <div>
-          <h2>Conte o que você observou</h2>
-          <p>Os detalhes fazem diferença na análise.</p>
+          <h2>O que você observou?</h2>
+          <p>Você pode registrar o problema mesmo sem saber a causa.</p>
         </div>
-        <Icon name="file" class="muted-icon" :size="23" />
       </div>
       <fieldset :disabled="busy">
         <div class="field">
           <div class="label-row">
             <label for="description"
-              >Relato da ocorrência <span class="required">*</span></label
+              >Descrição do problema <span class="required">*</span></label
             ><span class="character-count"
               >{{ form.description.length }} / 5000</span
             >
@@ -108,12 +105,12 @@ async function submit() {
             required
             minlength="10"
             maxlength="5000"
-            rows="7"
-            placeholder="Descreva o problema, em que momento aconteceu e o que você percebeu."
+            rows="6"
+            placeholder="Descreva o que aconteceu e em qual momento da operação."
           ></textarea>
           <p class="field-hint">
-            Descreva o fato observado, mesmo que a causa ainda seja
-            desconhecida.
+            Inclua os sinais que percebeu, como ruído, vibração, defeito ou
+            atraso.
           </p>
         </div>
         <div class="field">
@@ -124,20 +121,17 @@ async function submit() {
             id="reference"
             v-model="form.reference"
             maxlength="160"
-            placeholder="Identificação relacionada à ocorrência"
+            placeholder="Identificação relacionada ao problema"
           />
-          <p class="field-hint">
-            Use a referência que ajudar a equipe a localizar o problema.
-          </p>
         </div>
         <label class="risk-option"
           ><input v-model="form.relevant_risk" type="checkbox" /><span
             class="risk-copy"
             ><strong
-              ><Icon name="alert" :size="17" /> Há um risco relevante nesta
-              ocorrência</strong
+              ><Icon name="alert" :size="17" /> Esta situação envolve
+              risco</strong
             ><span
-              >Sinalize se a situação exige atenção especial da equipe.</span
+              >Marque se a ocorrência exige atenção especial da equipe.</span
             ></span
           ></label
         >
@@ -147,70 +141,68 @@ async function submit() {
       </div>
       <div class="form-bottom">
         <span
-          ><Icon name="check" :size="16" /> Relato salvo antes da
-          classificação</span
+          ><Icon name="check" :size="16" /> O relato é salvo antes da
+          classificação.</span
         ><button class="button primary" :disabled="busy" type="submit">
           <span v-if="busy" class="spinner"></span
-          >{{ busy ? "Salvando e classificando…" : "Registrar e classificar"
+          >{{ busy ? "Salvando relato…" : "Salvar e continuar"
           }}<Icon v-if="!busy" name="arrow" :size="18" />
         </button>
       </div>
     </form>
     <aside class="context-column">
-      <div class="journey-card">
-        <span class="small-tag">UM CAMINHO, TRÊS ETAPAS</span>
-        <h2>Da observação<br />à próxima ação.</h2>
-        <div class="journey-line" aria-hidden="true">
-          <span><Icon name="file" :size="20" /></span><i></i
-          ><span><Icon name="flow" :size="20" /></span><i></i
-          ><span><Icon name="check" :size="20" /></span>
-        </div>
-        <ol>
+      <section class="writing-guide">
+        <span class="aside-kicker">PARA UM BOM REGISTRO</span>
+        <h2>Alguns detalhes ajudam.</h2>
+        <p>Não precisa escrever muito. Comece pelo que você viu.</p>
+        <ul>
           <li>
-            <span>01</span>
-            <div>
-              <strong>O relato encontra a área</strong>
-              <p>O Jev classifica o problema para direcionar a análise.</p>
-            </div>
+            <span>Quando</span>
+            <p>Em que momento o problema apareceu?</p>
           </li>
           <li>
-            <span>02</span>
-            <div>
-              <strong>As evidências entram em cena</strong>
-              <p>Documentos e medições apoiam o especialista da área.</p>
-            </div>
+            <span>Onde</span>
+            <p>Em qual máquina, lote ou operação?</p>
           </li>
           <li>
-            <span>03</span>
-            <div>
-              <strong>A equipe recebe o contexto</strong>
-              <p>Um relatório inicial, com fontes e pontos a verificar.</p>
-            </div>
+            <span>O que mudou</span>
+            <p>O que estava diferente do funcionamento habitual?</p>
           </li>
-        </ol>
-        <div class="journey-note">
-          <span class="note-line"></span> A decisão continua com a sua equipe.
-        </div>
-      </div>
-      <div class="scope-note">
-        <Icon name="book" :size="20" />
+        </ul>
+      </section>
+      <section class="routing-guide">
+        <h3>Áreas de atendimento</h3>
         <div>
-          <h3>Feito para o chão de fábrica</h3>
+          <Icon name="machine" :size="19" />
           <p>
-            Equipamentos, qualidade e processos. Uma ocorrência, com o histórico
-            preservado.
+            <strong>Produção e equipamentos</strong
+            ><span>Condição e funcionamento das máquinas</span>
           </p>
+        </div>
+        <div>
+          <Icon name="quality" :size="19" />
+          <p>
+            <strong>Qualidade</strong
+            ><span>Defeitos e especificações do produto</span>
+          </p>
+        </div>
+        <div>
+          <Icon name="flow" :size="19" />
+          <p>
+            <strong>Processos industriais</strong
+            ><span>Filas, perdas e fluxo de produção</span>
+          </p>
+        </div>
+      </section>
+      <div class="history-shortcut">
+        <Icon name="history" :size="18" />
+        <div>
+          <p>Já registrou esse problema?</p>
           <RouterLink to="/historico"
-            >Consultar histórico <Icon name="arrow" :size="15"
+            >Encontrar no histórico <Icon name="arrow" :size="14"
           /></RouterLink>
         </div>
       </div>
     </aside>
-  </div>
-  <div class="area-strip">
-    <span>CONTEXTO PARA CADA ÁREA</span>
-    <div><Icon name="machine" :size="18" /> Produção e equipamentos</div>
-    <div><Icon name="quality" :size="18" /> Qualidade</div>
-    <div><Icon name="flow" :size="18" /> Processos industriais</div>
   </div>
 </template>

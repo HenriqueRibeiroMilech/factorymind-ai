@@ -196,8 +196,8 @@ function submit(event) {
         <h1>
           {{
             incident.status === "completed"
-              ? "Contexto para a próxima decisão."
-              : "Vamos reunir o contexto."
+              ? "Relatório da ocorrência"
+              : "Detalhes da ocorrência"
           }}
         </h1>
         <p>
@@ -237,7 +237,7 @@ function submit(event) {
           <section class="card section-card original-card">
             <div class="section-title">
               <span class="section-index">01</span>
-              <h2>O relato original</h2>
+              <h2>Relato original</h2>
               <span v-if="incident.relevant_risk" class="risk-tag"
                 ><Icon name="alert" :size="14" /> Risco sinalizado</span
               >
@@ -383,7 +383,7 @@ function submit(event) {
           >
             <div class="section-title">
               <span class="section-index">03</span>
-              <h2>Informações para a análise</h2>
+              <h2>Complementar ocorrência</h2>
             </div>
             <fieldset :disabled="locked">
               <div class="field">
@@ -499,7 +499,7 @@ function submit(event) {
         <aside class="detail-aside">
           <div class="aside-note">
             <Icon name="book" :size="24" />
-            <h3>Evidências antes de conclusões.</h3>
+            <h3>Sobre a análise</h3>
             <p>
               O relatório distingue o que foi observado, o que o modelo calculou
               e o que ainda é hipótese.
@@ -509,7 +509,7 @@ function submit(event) {
               Os documentos citados ficam disponíveis em trechos para a equipe
               conferir.
             </p>
-            <span class="small-tag">A DECISÃO É HUMANA</span>
+            <span class="small-tag">CONFIRA AS FONTES DO RELATÓRIO</span>
           </div>
           <div class="record-info">
             <span>ID COMPLETO</span><code>{{ incident.id }}</code>

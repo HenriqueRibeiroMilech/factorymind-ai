@@ -33,11 +33,9 @@ onMounted(load);
 <template>
   <div class="page-heading heading-with-action">
     <div>
-      <div class="eyebrow"><span></span> MEMÓRIA DA OPERAÇÃO</div>
-      <h1>Histórico de ocorrências<span class="accent-text">.</span></h1>
-      <p>
-        Retome um relato ou consulte as evidências de uma análise concluída.
-      </p>
+      <div class="eyebrow"><span></span> REGISTROS DA OPERAÇÃO</div>
+      <h1>Ocorrências</h1>
+      <p>Consulte os relatórios ou continue uma ocorrência pendente.</p>
     </div>
     <RouterLink to="/" class="button primary"
       ><Icon name="plus" :size="18" /> Novo relato</RouterLink
@@ -80,14 +78,14 @@ onMounted(load);
           {{
             query || filter
               ? "Nenhuma ocorrência encontrada"
-              : "O histórico começa com um relato"
+              : "Nenhuma ocorrência registrada"
           }}
         </h2>
         <p>
           {{
             query || filter
               ? "Tente outro termo ou altere o filtro de situação."
-              : "Os problemas registrados e seus relatórios ficam reunidos aqui."
+              : "Os relatos e as análises salvos aparecerão aqui."
           }}
         </p>
         <RouterLink v-if="!query && !filter" to="/" class="button primary"
