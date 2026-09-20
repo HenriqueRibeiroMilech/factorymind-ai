@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import Icon from "./components/Icon.vue";
+import ProjectGuide from "./components/ProjectGuide.vue";
 
 const route = useRoute();
 </script>
@@ -33,7 +34,7 @@ const route = useRoute();
     </nav>
   </header>
   <div class="app-body">
-    <main id="main" tabindex="-1"><RouterView /></main>
+    <main id="main" tabindex="-1"><ProjectGuide /><RouterView /></main>
     <footer class="page-footer">
       <span
         >FactoryMind AI <span class="footer-dot">/</span> Ocorrências

@@ -33,6 +33,26 @@ def mock_llm(monkeypatch):
     return calls
 
 
+@pytest.mark.parametrize("confidence,risk", [(0.3, False), (None, False), (0.95, True)])
+def test_confirming_suggestion_does_not_require_changing_category(client, monkeypatch, confidence, risk):
+    classify(monkeypatch, category="equipment", confidence=confidence)
+    record = client.post("/api/v1/incidents", json=payload(relevant_risk=risk)).json
+    assert record["status"] == "review_required"
+    client.patch(f'/api/v1/incidents/{record["id"]}/context', json={"complement": "A vibração foi observada durante a operação."})
+    confirmed = client.post(f'/api/v1/incidents/{record["id"]}/review', json={
+        "category": record["category"], "justification": "Categoria sugerida confirmada pela equipe.",
+    }).json
+    assert confirmed["status"] == "ready"
+    assert confirmed["category"] == confirmed["suggested_category"] == "equipment"
+    assert confirmed["description"] == record["description"]
+    assert confirmed["complement"] == "A vibração foi observada durante a operação."
+    mock_llm(monkeypatch)
+    analyzed = client.post(f'/api/v1/incidents/{record["id"]}/analyze').json
+    assert analyzed["status"] == "completed"
+    assert analyzed["report"]["category"] == "equipment"
+    assert analyzed["report"]["human_review"]["category"] == "equipment"
+
+
 @pytest.mark.parametrize("category", ["quality", "processes"])
 def test_ml_is_not_called_for_other_categories(client, monkeypatch, category):
     record = setup_incident(client, monkeypatch, category)

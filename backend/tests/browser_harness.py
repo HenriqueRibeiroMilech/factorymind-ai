@@ -3,6 +3,7 @@
 Run from the project root: python backend/tests/browser_harness.py
 Uses an ephemeral SQLite database, real retrieval and real trained ML.
 """
+import argparse
 import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -46,9 +47,12 @@ def generate(incident, sources, ml):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Isolated FactoryMind browser test server")
+    parser.add_argument("--port", type=int, default=5001)
+    args = parser.parse_args()
     with TemporaryDirectory(prefix="factorymind-browser-test-") as directory:
         app = create_app({"TESTING": True, "DATABASE_PATH": str(Path(directory) / "test.sqlite3"),
                           "JEV_API_KEY": "", "OPENAI_API_KEY": "", "LLM_MODEL": "llm-browser-test"})
         print("BROWSER TEST ONLY: isolated database, simulated providers, real retrieval and ML.")
         with patch("app.integrations.jev.classify", classify), patch("app.integrations.llm.generate", generate):
-            app.run(host="127.0.0.1", port=5001, debug=False, use_reloader=False)
+            app.run(host="127.0.0.1", port=args.port, debug=False, use_reloader=False)

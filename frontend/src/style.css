@@ -5,6 +5,7 @@
   background: #f7f6f3;
   font-synthesis: none;
   font-size: 15px;
+  --guide-clearance: 124px;
   --charcoal: #292724;
   --accent: #cf661f;
   --accent-soft: #f8e5d3;
@@ -15,6 +16,9 @@
 }
 * {
   box-sizing: border-box;
+}
+html {
+  scroll-padding-top: var(--guide-clearance);
 }
 body {
   margin: 0;
@@ -1512,7 +1516,7 @@ textarea::placeholder {
   border-radius: 6px;
   margin-bottom: 15px;
   padding: 18px;
-  scroll-margin-top: 25px;
+  scroll-margin-top: 0;
 }
 .evidence-card:target {
   outline: 2px solid #a29a90;
@@ -1736,6 +1740,10 @@ summary:focus-visible {
 }
 /* Portfolio entry points */
 .project-guide {
+  position: sticky;
+  top: 12px;
+  z-index: 5;
+  box-shadow: 0 3px 14px #3e251209;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2715,6 +2723,238 @@ summary:focus-visible {
     font-size: 11px;
   }
 }
+/* The guide follows every stage; ML help stays next to the actual form. */
+.help-dialog {
+  width: min(780px, calc(100% - 32px));
+}
+.category-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 19px;
+}
+.category-actions .review-toggle {
+  margin-top: 0;
+}
+.ml-guide {
+  margin: 25px 0 29px;
+  padding: 23px;
+  border: 1px solid #ddbd96;
+  border-radius: 8px;
+  background: #faf1e5;
+}
+.ml-guide-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #b27a36;
+  margin-bottom: 16px;
+}
+.ml-guide-heading > div > span {
+  display: block;
+  color: #b1844c;
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  margin-bottom: 7px;
+}
+.ml-guide-heading h3 {
+  border: 0;
+  padding: 0;
+  color: #7b5122;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  line-height: 1.4;
+}
+.ml-guide > p {
+  font-size: 12px;
+  color: #8d7352;
+  line-height: 1.9;
+}
+.ml-guide-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 0;
+  margin: 21px 0;
+  list-style: none;
+  border: 1px solid #e3cfb1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.ml-guide-flow li {
+  padding: 15px;
+  border-right: 1px solid #e3cfb1;
+  background: #fffcf7;
+}
+.ml-guide-flow li:last-child {
+  border: 0;
+}
+.ml-guide-flow li > span {
+  display: block;
+  color: #bd945e;
+  font-size: 9px;
+  margin-bottom: 9px;
+}
+.ml-guide-flow strong {
+  display: block;
+  color: #8c622e;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ml-guide-flow p {
+  margin-top: 7px;
+  color: #a08765;
+  font-size: 10px;
+  line-height: 1.85;
+}
+.ml-guide-inputs > strong {
+  color: #916b39;
+  font-size: 11px;
+  font-weight: 500;
+}
+.ml-guide-inputs ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px 19px;
+  padding: 0;
+  margin: 13px 0 20px;
+  list-style: none;
+}
+.ml-guide-inputs li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 9px;
+  color: #9a7f5b;
+  font-size: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e6d6bd;
+}
+.ml-guide-inputs li > span {
+  color: #b3966f;
+  font-size: 9px;
+  flex-shrink: 0;
+}
+.ml-guide p.ml-guide-result {
+  padding-top: 16px;
+  border-top: 1px solid #e3ceb0;
+  color: #916e3f;
+  font-size: 11px;
+}
+.ml-guide-result strong {
+  color: #825820;
+  font-weight: 500;
+}
+.ml-guide p.ml-guide-limit {
+  margin-top: 12px;
+  font-size: 10px;
+  color: #aa8d65;
+}
+.help-dialog h3.guide-flow-title {
+  border: 0;
+  padding: 0;
+  margin-top: 0;
+  color: #926b3a;
+}
+.example-ml-comparison {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #dfc49e;
+  border-radius: 5px;
+  background: #f9f0e3;
+}
+.example-ml-comparison summary {
+  cursor: pointer;
+  color: #a06a28;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+.example-ml-comparison > p {
+  margin: 12px 0 0;
+  color: #a18a66;
+  font-size: 10px;
+  line-height: 1.9;
+}
+.example-ml-comparison .example-measurements {
+  margin-top: 16px;
+}
+.ml-guide > p,
+.ml-guide-flow p,
+.ml-guide-inputs li,
+.ml-guide p.ml-guide-limit,
+.example-ml-comparison > p {
+  color: #88735a;
+}
+@media (max-width: 980px) {
+  :root {
+    --guide-clearance: 174px;
+  }
+}
+@media (max-width: 520px) {
+  :root {
+    --guide-clearance: 190px;
+  }
+  .project-guide {
+    top: 6px;
+  }
+  .category-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .category-actions .review-toggle {
+    align-self: flex-start;
+  }
+  .ml-guide {
+    padding: 17px 14px;
+    margin-top: 22px;
+  }
+  .ml-guide-heading {
+    gap: 9px;
+    align-items: flex-start;
+  }
+  .ml-guide-heading > svg {
+    margin-top: 4px;
+    width: 20px;
+  }
+  .ml-guide-heading h3 {
+    font-size: 17px;
+  }
+  .ml-guide > p {
+    font-size: 11px;
+  }
+  .ml-guide-flow {
+    grid-template-columns: 1fr;
+  }
+  .ml-guide-flow li {
+    border-right: 0;
+    border-bottom: 1px solid #e3cfb1;
+    padding: 13px;
+  }
+  .ml-guide-flow li > span {
+    margin-bottom: 6px;
+  }
+  .ml-guide-flow p {
+    margin-top: 4px;
+  }
+  .ml-guide-inputs ul {
+    gap: 9px 12px;
+  }
+  .ml-guide-inputs li {
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.7;
+  }
+  .example-ml-comparison {
+    padding: 13px;
+  }
+  .example-ml-comparison .example-measurements {
+    padding: 13px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

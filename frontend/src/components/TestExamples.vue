@@ -3,6 +3,9 @@ import { computed, ref } from "vue";
 import { categories, measurementFields } from "../api";
 import Icon from "./Icon.vue";
 
+const props = defineProps({ category: { type: String, default: "equipment" } });
+const emit = defineEmits(["select-scenario"]);
+
 const scenarios = [
   {
     category: "equipment",
@@ -12,7 +15,7 @@ const scenarios = [
     reference: "Fresadora F-07",
     steps: [
       "Cole o relato na descrição do problema e clique em Salvar e continuar.",
-      "Confira a categoria Produção e equipamentos. Se uma revisão for solicitada, confirme ou corrija a área e escreva a justificativa.",
+      "Confira a categoria Produção e equipamentos. Se for solicitada uma confirmação, clique em Confirmar categoria. Para corrigir, abra Revisar categoria e justifique o ajuste.",
       "Selecione Tenho as seis medições, informe os valores abaixo e clique em Gerar análise inicial.",
     ],
     expected:
@@ -40,14 +43,19 @@ const scenarios = [
     reference: "Usinagem → inspeção",
     steps: [
       "Cole o relato na descrição do problema e clique em Salvar e continuar.",
-      "Confira a categoria Processos industriais e faça a revisão caso ela seja necessária.",
+      "Confira a categoria Processos industriais. Se ela estiver correta, confirme quando solicitado; use Revisar categoria apenas se precisar corrigir.",
       "Se quiser, complemente com o período observado e as etapas envolvidas. Solicite a análise com as informações disponíveis.",
     ],
     expected:
       "O relatório deve encaminhar a ocorrência para Engenharia de processos, com o modelo de equipamentos identificado como não aplicável. Confira as hipóteses sobre o fluxo e os dados solicitados antes de concluir que há um gargalo.",
   },
 ];
-const active = ref(0);
+const active = computed(() =>
+  Math.max(
+    0,
+    scenarios.findIndex((item) => item.category === props.category),
+  ),
+);
 const scenario = computed(() => scenarios[active.value]);
 const copied = ref(false);
 const copyError = ref("");
@@ -60,8 +68,17 @@ const readings = {
   tool_wear: 0,
 };
 
+const comparisonReadings = {
+  product_type: "L",
+  air_temperature: 300,
+  process_temperature: 313,
+  rotational_speed: 1400,
+  torque: 70,
+  tool_wear: 210,
+};
+
 function selectScenario(index) {
-  active.value = index;
+  emit("select-scenario", scenarios[index].category);
   copied.value = false;
   copyError.value = "";
 }
@@ -140,6 +157,39 @@ async function copyDescription() {
           </div>
         </dl>
       </div>
+      <details class="example-ml-comparison">
+        <summary>Comparar outra condição no modelo</summary>
+        <p>
+          Para explorar o ML, crie outro registro de equipamentos com o mesmo
+          relato e esta segunda leitura fictícia. Compare o escore, o limiar e a
+          decisão dos dois relatórios.
+        </p>
+        <div class="example-measurements">
+          <h4>Segunda leitura para comparar</h4>
+          <p>
+            Considere novamente os seis valores como uma leitura do mesmo
+            instante.
+          </p>
+          <dl>
+            <div>
+              <dt>Tipo de produto</dt>
+              <dd>{{ comparisonReadings.product_type }}</dd>
+            </div>
+            <div v-for="field in measurementFields" :key="field.key">
+              <dt>{{ field.label }}</dt>
+              <dd>
+                {{ comparisonReadings[field.key] }}
+                <span>{{ field.unit }}</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          O torque e o desgaste são maiores neste conjunto. O modelo avalia a
+          combinação das seis entradas; o resultado não substitui a observação
+          de vibração no relato.
+        </p>
+      </details>
       <p class="scenario-alternative">
         <strong>Para testar sem medições:</strong> em outro registro, escolha
         Não disponho das medições. O relatório deve informar que o modelo não
@@ -164,7 +214,7 @@ async function copyDescription() {
   </div>
   <p class="examples-review-tip">
     <strong>Quer testar a revisão humana?</strong> Marque Esta situação envolve
-    risco em um novo relato. A categoria precisará ser confirmada ou corrigida
-    com uma justificativa antes da análise.
+    risco em um novo relato. Você poderá confirmar a categoria com um clique ou
+    abrir Revisar categoria para corrigir e justificar o ajuste.
   </p>
 </template>

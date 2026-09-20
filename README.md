@@ -71,8 +71,8 @@ Abra [http://127.0.0.1:5000](http://127.0.0.1:5000). O Flask serve os arquivos d
 ## Como usar
 
 - **Novo relato:** descreva o problema; identificação e sinalização de risco são opcionais. O relato é salvo antes de chamar o Jev.
-- **Conheça e teste:** os botões em destaque na página inicial reúnem o funcionamento e três cenários para experimentar. Cada exemplo tem um relato para copiar, um roteiro e os pontos a conferir no relatório; o caso de equipamentos também inclui as seis leituras fictícias. A ajuda preserva o que já foi digitado.
-- **Revisão:** confiança abaixo de 0,75, confiança ausente ou risco sinalizado exigem confirmar/corrigir a categoria e justificar antes da análise. Também é possível revisar voluntariamente. A sugestão original permanece salva.
+- **Conheça e teste:** o bloco de ajuda acompanha todas as páginas e fica acessível durante o preenchimento. Ele explica o treino e a inferência de ML e reúne três cenários para experimentar. O exemplo de equipamentos inclui dois conjuntos de seis leituras fictícias para comparar os resultados. A ajuda preserva os campos e o cenário selecionado durante a navegação.
+- **Revisão:** a edição da categoria fica fechada até clicar em Revisar categoria. Confiança abaixo de 0,75, confiança ausente ou risco sinalizado pedem confirmação antes da análise: Confirmar categoria mantém a sugestão com um clique e registra essa confirmação. Para corrigir a área, abra a edição e justifique o ajuste. A sugestão original permanece salva.
 - **Contexto:** acrescente um complemento sem alterar o original. Em equipamentos, informe todas as seis leituras do mesmo instante ou selecione que não dispõe delas. As temperaturas usam kelvin; vibração permanece no texto. Qualidade e Processos seguem sem ML.
 - **Relatório:** consulte hipóteses, recomendações, trechos e lacunas. Quando o ML é executado, veja entradas, escore, limiar, decisão e versão. A interface também mostra os valores originais sem arredondamento em um detalhe expansível.
 - **Histórico:** busque por relato, identificação ou ID, filtre pendentes/concluídas e reabra o registro. Um relatório concluído é lido do SQLite, sem nova chamada ao LLM.
@@ -120,5 +120,7 @@ Para repetir a verificação manual de sucesso no navegador sem usar credenciais
 ```powershell
 .\.venv\Scripts\python.exe backend\tests\browser_harness.py
 ```
+
+Se a porta de testes já estiver em uso, acrescente `--port 5055` e abra essa porta no navegador.
 
 Abra [http://127.0.0.1:5001](http://127.0.0.1:5001) após gerar o build. Apenas Jev e LLM são simulados nesse processo de teste; recuperação e ML usam a implementação real. O caso de Qualidade começa com uma sugestão incorreta de baixa confiança para exercitar a correção humana. O processo normal `backend/run.py` não importa esse arquivo e não oferece nenhuma chave de ativação de simulações. Encerre o servidor de testes com `Ctrl+C` para remover seu banco temporário. Para validar as chamadas reais, configure as duas chaves e use o servidor normal.

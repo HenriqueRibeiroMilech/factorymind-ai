@@ -54,7 +54,7 @@ async function load(hydrate = false) {
     if (request !== serial) return;
     incident.value = record;
     reviewCategory.value = record.category || "";
-    showReview.value = record.status === "review_required";
+    showReview.value = false;
     if (hydrate) {
       initialized = false;
       form.complement = record.complement;
@@ -109,18 +109,32 @@ function retryTriage() {
       method: "POST",
     });
     reviewCategory.value = incident.value.category || "";
-    showReview.value = incident.value.status === "review_required";
+    showReview.value = false;
   });
 }
 
+function openReview() {
+  reviewCategory.value = incident.value.category;
+  showReview.value = true;
+}
+
+function confirmCategory() {
+  submitReview(
+    incident.value.category,
+    "Categoria sugerida confirmada pela equipe.",
+  );
+}
+
 function saveReview() {
+  submitReview(reviewCategory.value, justification.value);
+}
+
+function submitReview(category, note) {
   action(async () => {
+    const unchanged = category === incident.value.category;
     const record = await api(`/incidents/${props.id}/review`, {
       method: "POST",
-      body: JSON.stringify({
-        category: reviewCategory.value,
-        justification: justification.value,
-      }),
+      body: JSON.stringify({ category, justification: note }),
     });
     incident.value = record;
     if (record.category !== "equipment") {
@@ -129,8 +143,9 @@ function saveReview() {
     }
     showReview.value = false;
     justification.value = "";
-    success.value =
-      "Categoria revisada e justificativa salva. Você já pode solicitar a análise.";
+    success.value = unchanged
+      ? "Categoria confirmada. Você já pode solicitar a análise."
+      : "Categoria corrigida e justificativa salva. Você já pode solicitar a análise.";
   });
 }
 
@@ -311,22 +326,32 @@ function submit(event) {
             >
               <Icon name="alert" /><span>{{
                 incident.relevant_risk
-                  ? "O risco sinalizado exige confirmação da categoria antes da análise."
-                  : "A confiança está baixa ou não foi informada. Confirme ou corrija a categoria para continuar."
+                  ? "Você sinalizou risco. Se a área estiver correta, confirme a categoria para continuar. Para corrigir, clique em Revisar categoria."
+                  : "A confiança está baixa ou não foi informada. Se a sugestão estiver correta, confirme a categoria. Para corrigir, clique em Revisar categoria."
               }}</span>
             </div>
-            <button
-              v-if="!showReview && !locked"
-              class="text-button review-toggle"
-              @click="showReview = true"
-            >
-              {{
-                incident.review
-                  ? "Ajustar decisão da equipe"
-                  : "Revisar categoria"
-              }}
-              <Icon name="arrow" :size="15" />
-            </button>
+            <div v-if="!showReview && !locked" class="category-actions">
+              <button
+                v-if="incident.status === 'review_required'"
+                type="button"
+                class="button primary"
+                @click="confirmCategory"
+              >
+                Confirmar categoria <Icon name="check" :size="17" />
+              </button>
+              <button
+                type="button"
+                class="text-button review-toggle"
+                @click="openReview"
+              >
+                {{
+                  incident.review
+                    ? "Ajustar decisão da equipe"
+                    : "Revisar categoria"
+                }}
+                <Icon name="arrow" :size="15" />
+              </button>
+            </div>
             <form
               v-if="showReview"
               class="review-form"
@@ -365,7 +390,6 @@ function submit(event) {
                   >
                     Salvar revisão <Icon name="check" :size="17" /></button
                   ><button
-                    v-if="incident.status !== 'review_required'"
                     type="button"
                     class="text-button"
                     @click="showReview = false"
