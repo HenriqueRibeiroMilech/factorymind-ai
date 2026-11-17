@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: factorymind-ai
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    autoDeployTrigger: off
+    envVars:
+      - key: JEV_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        sync: false
+      - key: JEV_MODEL
+        value: jev-latest

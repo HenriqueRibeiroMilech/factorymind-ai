@@ -3,3 +3,6 @@
 *.md text eol=lf
 *.vue text eol=lf
 *.json text eol=lf
+*.yaml text eol=lf
+Dockerfile text eol=lf
+.dockerignore text eol=lf
